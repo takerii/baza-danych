@@ -1,0 +1,184 @@
+CREATE DATABASE szkola;
+USE szkola;
+
+CREATE TABLE nauczyciele (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon VARCHAR(50),
+    przedmiot VARCHAR(50),
+    data_urodzenia DATE,
+    adres TEXT
+);
+
+INSERT INTO nauczyciele (imie, nazwisko, telefon, przedmiot, data_urodzenia, adres) VALUES
+('Anna', 'Kowalska', '123-456-789', 'Matematyka', '1985-04-12', 'ul. Podolska 10, 85-000 Bydgoszcz'),
+('Piotr', 'Nowak', '987-654-321', 'Fizyka', '1980-02-20', 'ul. Dworcowa 5, 85-000 Bydgoszcz'),
+('Maria', 'Zielińska', '555-666-777', 'Biologia', '1990-09-15', 'ul. Lipowa 12, 85-000 Bydgoszcz'),
+('Jan', 'Wiśniewski', '111-222-333', 'Chemia', '1975-12-25', 'ul. Polna 8, 85-000 Bydgoszcz'),
+('Ewa', 'Kaczmarek', '444-555-666', 'Historia', '1988-11-30', 'ul. Słowiańska 22, 85-000 Bydgoszcz'),
+('Marek', 'Pawlak', '666-777-888', 'Informatyka', '1979-03-03', 'ul. Gdańska 25, 85-000 Bydgoszcz'),
+('Katarzyna', 'Wójcik', '333-444-555', 'Geografia', '1983-07-14', 'ul. Kujawska 3, 85-000 Bydgoszcz'),
+('Tomasz', 'Kwiatkowski', '222-333-444', 'Wychowanie fizyczne', '1992-01-22', 'ul. Toruńska 7, 85-000 Bydgoszcz'),
+('Zofia', 'Szymańska', '888-999-000', 'Język angielski', '1987-06-10', 'ul. Witebska 14, 85-000 Bydgoszcz');
+
+CREATE TABLE dyrekcja (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon VARCHAR(50),
+    stanowisko VARCHAR(50),
+    data_urodzenia DATE,
+    adres TEXT
+);
+
+INSERT INTO dyrekcja (imie, nazwisko, telefon, stanowisko, data_urodzenia, adres) VALUES
+('Jan', 'Kowalski', '700-123-456', 'Dyrektor', '1975-06-15', 'ul. Leśna 5, 85-000 Bydgoszcz'),
+('Anna', 'Nowak', '701-234-567', 'Wicedyrektor', '1980-08-22', 'ul. Sosnowa 11, 85-000 Bydgoszcz'),
+('Piotr', 'Wiśniewski', '702-345-678', 'Sekretarz', '1990-03-30', 'ul. Brzozowa 20, 85-000 Bydgoszcz');
+
+CREATE TABLE pracownicy (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon VARCHAR(50),
+    stanowisko VARCHAR(50),
+    data_urodzenia DATE,
+    adres TEXT
+);
+
+INSERT INTO pracownicy (imie, nazwisko, telefon, stanowisko, data_urodzenia, adres) VALUES
+('Maria', 'Kowalczyk', '710-123-456', 'Sprzątaczka', '1965-12-04', 'ul. Długa 15, 85-000 Bydgoszcz'),
+('Andrzej', 'Wesołowski', '711-234-567', 'Woźny', '1970-03-18', 'ul. Krótka 8, 85-000 Bydgoszcz'),
+('Barbara', 'Nowicka', '712-345-678', 'Sprzątaczka', '1978-05-22', 'ul. Różana 9, 85-000 Bydgoszcz');
+
+CREATE TABLE sale (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nazwa_sali VARCHAR(50) NOT NULL,
+    przedmiot VARCHAR(50) NOT NULL,
+    nauczyciel_id INT,
+    FOREIGN KEY (nauczyciel_id) REFERENCES nauczyciele(id)
+);
+
+INSERT INTO sale (nazwa_sali, przedmiot, nauczyciel_id) VALUES
+('Sala 101', 'Matematyka', 1),
+('Sala 102', 'Język Polski', 2),
+('Sala 103', 'Historia', 5),
+('Sala 104', 'Biologia', 3),
+('Sala 105', 'Chemia', 4),
+('Sala 106', 'Geografia', 7),
+('Sala 107', 'Fizyka', 2),
+('Sala 108', 'Informatyka', 6),
+('Sala Gimnastyczna', 'Wychowanie fizyczne', 8);
+
+CREATE TABLE inwentarz (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(100) NOT NULL,
+    kategoria VARCHAR(50),
+    ilosc INT NOT NULL,
+    sale_id INT,
+    data_zakupu DATE,
+    stan VARCHAR(50),
+    FOREIGN KEY (sale_id) REFERENCES sale(id)
+);
+
+INSERT INTO inwentarz (nazwa, kategoria, ilosc, sale_id, data_zakupu, stan) VALUES
+('Kreda', 'Materiały biurowe', 100, 1, '2023-01-10', 'Nowy'),
+('Pisaki', 'Materiały biurowe', 50, 2, '2023-02-15', 'Używany'),
+('Tablica', 'Sprzęt szkolny', 10, 3, '2022-09-01', 'Używany'),
+('Komputer', 'Sprzęt elektroniczny', 20, 8, '2021-03-22', 'Używany'),
+('Biurko nauczycielskie', 'Meble', 15, 1, '2020-08-10', 'Używany'),
+('Krzesła', 'Meble', 30, 1, '2020-08-10', 'Używany'),
+('Mikroskop', 'Sprzęt laboratoryjny', 5, 4, '2021-05-12', 'Nowy'),
+('Kalkulator', 'Sprzęt biurowy', 10, 5, '2023-03-15', 'Nowy'),
+('Projektor', 'Sprzęt elektroniczny', 3, 8, '2023-06-20', 'Nowy'),
+('Drukarka', 'Sprzęt elektroniczny', 2, 8, '2020-02-01', 'Używany');
+
+CREATE TABLE uczniowie_1A (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon_rodzica VARCHAR(50),
+    data_urodzenia DATE,
+    wychowawca_id INT,
+    FOREIGN KEY (wychowawca_id) REFERENCES nauczyciele(id)
+);
+
+CREATE TABLE uczniowie_1B (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon_rodzica VARCHAR(50),
+    data_urodzenia DATE,
+    wychowawca_id INT,
+    FOREIGN KEY (wychowawca_id) REFERENCES nauczyciele(id)
+);
+
+CREATE TABLE uczniowie_2A (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon_rodzica VARCHAR(50),
+    data_urodzenia DATE,
+    wychowawca_id INT,
+    FOREIGN KEY (wychowawca_id) REFERENCES nauczyciele(id)
+);
+
+CREATE TABLE uczniowie_2B (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon_rodzica VARCHAR(50),
+    data_urodzenia DATE,
+    wychowawca_id INT,
+    FOREIGN KEY (wychowawca_id) REFERENCES nauczyciele(id)
+);
+
+INSERT INTO uczniowie_1A (imie, nazwisko, telefon_rodzica, data_urodzenia, wychowawca_id) VALUES
+('Kacper', 'Nowak', '601-234-567', '2010-05-12', 1),
+('Ola', 'Wiśniewska', '602-345-678', '2010-11-23', 1),
+('Michał', 'Kwiatkowski', '603-456-789', '2010-03-07', 1),
+('Julia', 'Zielińska', '604-567-890', '2010-08-19', 1),
+('Filip', 'Szymański', '605-678-901', '2010-02-22', 1),
+('Weronika', 'Pawlak', '606-789-012', '2010-06-15', 1),
+('Łukasz', 'Kaczmarek', '607-890-123', '2010-01-25', 1),
+('Patryk', 'Pietrzak', '608-901-234', '2010-04-10', 1),
+('Natalia', 'Sikora', '609-012-345', '2010-12-02', 1),
+('Jakub', 'Jankowski', '610-123-456', '2010-09-11', 1),
+('Karolina', 'Kowalczyk', '611-234-567', '2010-07-08', 1);
+
+INSERT INTO uczniowie_1B (imie, nazwisko, telefon_rodzica, data_urodzenia, wychowawca_id) VALUES
+('Igor', 'Nowak', '616-789-012', '2010-05-03', 4),
+('Kasia', 'Wójcik', '617-890-123', '2010-06-18', 4),
+('Paweł', 'Wiśniewski', '618-901-234', '2010-04-10', 4),
+('Ania', 'Kaczmarek', '619-012-345', '2010-08-11', 4),
+('Bartek', 'Zawisza', '620-123-456', '2010-02-07', 4),
+('Dominika', 'Kowalska', '621-234-567', '2010-12-19', 4),
+('Sebastian', 'Malinowski', '622-345-678', '2010-09-22', 4),
+('Iga', 'Nowakowska', '623-456-789', '2010-11-01', 4),
+('Kuba', 'Lipiński', '624-567-890', '2010-01-28', 4);
+
+INSERT INTO uczniowie_2A (imie, nazwisko, telefon_rodzica, data_urodzenia, wychowawca_id) VALUES
+('Ewa', 'Lewandowska', '631-234-567', '2009-05-12', 3),
+('Wojtek', 'Witkowski', '632-345-678', '2009-03-10', 3),
+('Zofia', 'Michałowska', '633-456-789', '2009-07-21', 3),
+('Łukasz', 'Stefanowski', '634-567-890', '2009-04-15', 3),
+('Krystian', 'Kwiatkowski', '635-678-901', '2009-06-17', 3),
+('Ola', 'Pietras', '636-789-012', '2009-08-22', 3),
+('Daria', 'Rogalska', '637-890-123', '2009-01-03', 3),
+('Tomek', 'Ślusarczyk', '638-901-234', '2009-11-05', 3);
+
+INSERT INTO uczniowie_2B (imie, nazwisko, telefon_rodzica, data_urodzenia, wychowawca_id) VALUES
+('Karol', 'Wójcik', '646-789-012', '2009-05-01', 8),
+('Marta', 'Zalewska', '647-890-123', '2009-10-05', 8),
+('Paweł', 'Szymański', '648-901-234', '2009-04-20', 8),
+('Kamil', 'Pawlak', '649-012-345', '2009-07-11', 8),
+('Agata', 'Nowakowska', '650-123-456', '2009-01-13', 8),
+('Mateusz', 'Krukowski', '651-234-567', '2009-09-29', 8),
+('Michał', 'Górski', '652-345-678', '2009-02-03', 8),
+('Alicja', 'Bąk', '653-456-789', '2009-06-06', 8),
+('Grzegorz', 'Sikorski', '654-567-890', '2009-08-10', 8),
+('Zuzanna', 'Kowalczyk', '655-678-901', '2009-12-18', 8),
+('Wojciech', 'Pietrzak', '656-789-012', '2009-10-02', 8),
+('Krystyna', 'Adamczak', '657-890-123', '2009-03-04', 8);
+
